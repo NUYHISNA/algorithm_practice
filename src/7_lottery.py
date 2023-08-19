@@ -24,12 +24,19 @@
 #     lotto_numbers.append(value)
 lotto_numbers = []
 import random
-while True:
-    value = random.randint(1, 50)
-    if value in lotto_numbers:
-        continue
-    lotto_numbers.append(value)
-    if len(lotto_numbers) == 6:
-        break
-print(lotto_numbers)
 
+
+def lotto_list():
+    lotto_numbers = []
+    while True:
+        value = random.randint(1, 50)
+        if value in lotto_numbers:
+            continue
+        lotto_numbers.append(value)
+        if len(lotto_numbers) == 6:
+            break
+        
+    return lotto_numbers
+
+result = lotto_list()
+print(f"{result} - The End")
