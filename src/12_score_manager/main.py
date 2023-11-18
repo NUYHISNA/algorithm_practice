@@ -28,16 +28,27 @@ def input_score():
     if len(value) != 5:
         print("입력값을 입력하세요.")
         return
-    if (value[4] !="M") and (value[4] != "F"):
+    if value[4] not in ["M", "F"]:
         print("M/F 로 중간/기말을 구분해주세요.")
         return
     con = sqlite3.connect("score.db")
     cur = con.cursor()
-    cur.execute(f'INSERT INTO score VALUES('{value[0]}','{value[1]}','{value[2]}','{value[3]}','{value[4]}')')
+    cur.execute(f"INSERT INTO score VALUES('{value[0]}','{value[1]}','{value[2]}','{value[3]}','{value[4]}')")
     con.commit()
     con.close()
-    print(input_value.split(" "))
-
+    
+def get_score():
+    #학생 성적 조회
+    con = sqlite3.connect("score.db")
+    cur = con.cursor()
+    result = cur.execute("SELECT name, Korean, math, english, kind FROM SCORE")
+    scores = result.fetchall()
+    for data in scores:
+        print(f"이름: {data[0]}, 국어: {data[1]}, 수학: {data[2]}, 영어: {data[3]}, M/F: {data[4]}")
+    # for data in datas:
+    #     print(data)
+    
+    
 def run():
     """
     프로그램 실행 시작점
@@ -49,7 +60,8 @@ def run():
         if user_input == '1':
             input_score()
         elif user_input == '2':
-            print("한 학생 성적 출력\n")
+            #print("한 학생 성적 출력\n")
+            get_score()
         elif user_input == '3':
             print("평균 계산/보여주기\n")
         elif user_input == '4':
@@ -59,4 +71,4 @@ def run():
             is_working = False
  
 #run()           
-input_score()
+get_score()
