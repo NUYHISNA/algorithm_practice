@@ -13,6 +13,7 @@ import sqlite3
 """
 
 def print_menu():
+    #메뉴를 출력
     print("학생 성적 관리 프로그램")
     print("1.학생성적 입력")
     print("2.한 학생 성적 출력")
@@ -21,10 +22,14 @@ def print_menu():
     print("종료 하기 위해서 exit 입력을 해주세요.")
 
 def input_score():
+    """
+    사용자로부터 시험성적 출력
+    """
     print("==== 1. 학생성적 입력 ====")
     print("학생이름 국어 수학 영어 구분 순서대로 입력해주세요")
     print("ex) 홍길동 98 85 95 M")
     value = input().split(" ")
+    #유효성 검사
     if len(value) != 5:
         print("입력값을 입력하세요.")
         return
@@ -48,7 +53,18 @@ def get_score():
     # for data in datas:
     #     print(data)
     
+def get_avg_score():
+    input_MF = input("중간고사-M , 기말고사-F: ")
+    con = sqlite3.connect("score.db")
+    cur = con.cursor()
+    result = cur.execute(f"SELECT name, Korean, math, english, kind FROM SCORE WHERE kind = '{input_MF}'")
+    scores = result.fetchall()
+    for data in scores:
+        avg = int(data[1]) + int(data[2]) + int(data[3])
+        value = avg/3
+        print(f"이름: {data[0]}, 평균: {value}, 지필고사: {input_MF}")
     
+
 def run():
     """
     프로그램 실행 시작점
@@ -63,7 +79,8 @@ def run():
             #print("한 학생 성적 출력\n")
             get_score()
         elif user_input == '3':
-            print("평균 계산/보여주기\n")
+            #print("평균 계산/보여주기\n")
+            get_avg_score()
         elif user_input == '4':
             print("메뉴 출력\n")
         elif user_input == 'exit' :
@@ -71,4 +88,4 @@ def run():
             is_working = False
  
 #run()           
-get_score()
+get_avg_score()
